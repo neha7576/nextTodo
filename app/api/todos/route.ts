@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     await connectDB();
-   // return NextResponse.json({ message: "DB Connected" });
     const todos = await Todo.find().sort({ createdAt: -1 });
     return NextResponse.json(todos);
 
