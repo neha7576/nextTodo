@@ -27,7 +27,7 @@ export default function Tasks(){
           <div className="min-h-screen w-full flex flex-col bg-gray-100">
             
                 <div className="fixed top-0 left-0 w-full">
-                    <Header showDrawer={false} showNoti={false} title="Task" />
+                    <Header showDrawer={false} showNoti={false} title="Tasks" />
                 </div>
                
                   <div className="flex-1 overflow-y-auto space-y-2 mt-15 indica">
