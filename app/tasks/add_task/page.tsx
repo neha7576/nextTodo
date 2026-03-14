@@ -13,58 +13,31 @@ export default function AddTaskPage(){
 
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
-  setLoading(true)
+        setLoading(true)
+        try{
 
-          try{
+            await createTodo({title,description})
+            alert("Task Added")
+            setTitle("")
+            setDescription("")
+            router.back()
 
-                await createTodo({
-                title,
-                description
-                })
-
-                alert("Task Added")
-
-                setTitle("")
-                setDescription("")
-                   router.back()
-
-            }catch(error){
-                console.log(error)
-                alert("Something went wrong")
-            }
-
-  setLoading(false)
-
-
-        //  const res = await fetch("/api/todos",{
-        //     method:"POST",
-        //     headers:{
-        //         "Content-Type":"application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         title,
-        //         description
-        //     })
-        //     })
-
-        //     const data = await res.json()
-
-        //     console.log(data)
-
-        //     setTitle("")
-        //     setDescription("")
+        }catch(error){
+            console.log(error)
+            alert("Something went wrong")
+        }
+        setLoading(false)
     };
 
     return(
         <>
           <div className="min-h-screen w-full flex flex-col bg-gray-100">
-                    
-                        <div className="fixed top-0 left-0 w-full">
-         <Header showDrawer={false} showNoti={false} title="Add New Task" />
-                        </div>
-                          <div className="min-h-screen bg-gray-300 p-4">
+            <div className="fixed top-0 left-0 w-full">
+                <Header showDrawer={false} showNoti={false} title="Add New Task" />
+            </div>
+            <div className="min-h-screen bg-gray-300 p-4">
                 <h1 className="font-bold mb-6 text-2xl">Add New Task</h1>
-   {loading && <Loader />}
+            {loading && <Loader />}
                 <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-xl space-y-6">
                     <div>
                         <label className="block text-sm font-medium">Title :</label>
@@ -100,7 +73,7 @@ export default function AddTaskPage(){
                 </form>
 
             </div>
-                        </div>
+        </div>
           
         </>
     )
