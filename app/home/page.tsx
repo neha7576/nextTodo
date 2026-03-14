@@ -24,24 +24,14 @@ export default function HomePage(){
             }
             };
 
-      const tasks = [
-        { id: 1, title: "Design UI", status: "Pending" },
-        { id: 2, title: "Create API", status: "Completed" },
-        { id: 3, title: "Fix bugs", status: "Pending" },
-          { id: 4, title: "Design UI", status: "Pending" },
-        { id: 5, title: "Create API", status: "Completed" },
-        { id: 6, title: "Fix bugs", status: "Pending" },
-          { id: 7, title: "Design UI", status: "Pending" },
-        { id: 8, title: "Create API", status: "Completed" },
-        { id: 9, title: "Fix bugs", status: "Pending" }
-        ];
+  
     return(
         <div className=" min-h-screen w-full flex flex-col bg-gray-100">
             <div className="fixed w-full flex">
                    <Header showDrawer showNoti  title= "Home" onMenuClick={() => setOpen(true)} />
             </div>
          
-                 <Drawer isOpen={open} onClose={() => setOpen(false)} />
+            <Drawer isOpen={open} onClose={() => setOpen(false)} />
             <main className="flex flex-col h-screen p-4 mt-10">
                 <div className=" bg-linear-to-br from-purple-500 via-indigo-500 to bg-pink-800 text-white p-6 rounded-2xl shadow-lg  w-full">
                     <h3 className="text-white font-bold">Today's Tasks</h3>

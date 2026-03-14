@@ -49,8 +49,6 @@ export default function Tasks(){
                     </div>
               
                 <div className="fixed bottom-0 left-0 w-full bg-white  p-2 flex justify-center">
-                    {/* <button className="w-fit bg-indigo-500 text-white py-3 px-4 rounded-lg">
-                        Add New Task</button> */}
                         <Link href="/tasks/add_task" className="w-fit bg-indigo-500 text-white py-3 px-4 rounded-lg"> Add New Task</Link>
                 </div>
             </div>

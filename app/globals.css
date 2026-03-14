@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-color: #75096c;
+  --secondary-color: #850774;
 }
 
 @theme inline {
@@ -24,3 +26,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+.btn{
+  background: var(--primary-color);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
