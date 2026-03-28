@@ -1,9 +1,9 @@
 "use client";
-import { createTodo } from "@/app/services/taskService";
+import { createTodo, getTodoById, updateTask } from "@/app/services/taskService";
 import Header from "@/components/header";
 import Loader from "@/components/loader";
-import { useState } from "react"
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AddTaskPage(){
     const [title,setTitle] = useState("");
@@ -11,13 +11,51 @@ export default function AddTaskPage(){
     const [loading,setLoading] = useState(false)
     const router = useRouter()
 
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id");
+
+ 
+    const userData = localStorage.getItem("user");
+
+    useEffect(()=>{
+          setLoading(true)
+          if (id) {
+            getTodoById(id)
+            .then((data) => {
+                  setLoading(false)
+                setTitle(data.title);
+                setDescription(data.description);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+    },[id])
+
+    if (!userData) {
+        console.log("No user found");
+        return;
+    }
+    const user = JSON.parse(userData);
+
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
+         if (!title.trim()) {
+            alert("Title is required");
+            return;
+        }
+        if (!description.trim()) {
+            alert("Description is required");
+            return;
+        }
         setLoading(true)
         try{
-
-            await createTodo({title,description})
-            alert("Task Added")
+            if(id){
+                await updateTask(id,{title,description})
+            }else{
+                await createTodo({title,description,userId :user._id})
+                alert("Task Added")
+            }
             setTitle("")
             setDescription("")
             router.back()
@@ -33,7 +71,7 @@ export default function AddTaskPage(){
         <>
           <div className="min-h-screen w-full flex flex-col bg-gray-100">
             <div className="fixed top-0 left-0 w-full">
-                <Header showDrawer={false} showNoti={false} title="Add New Task" />
+                <Header showDrawer={false} showNoti={false} title={id?"Update Task":"Add New Task"} />
             </div>
             <div className="min-h-screen bg-gray-300 p-4">
                 <h1 className="font-bold mb-6 text-2xl">Add New Task</h1>
@@ -63,11 +101,12 @@ export default function AddTaskPage(){
                         </div>
                         <div className="w-full flex justify-center items-center ">
                              <button
-                            type="submit"
-                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg"
-                            >
-                            Add Task
-                        </button>
+                                type="submit"
+                                className="bg-indigo-500 text-white px-4 py-2 rounded-lg"
+                                >{id ? "Update Task" : "Add Task"}
+                                
+                            </button>
+       
                         </div>
                        
                 </form>
