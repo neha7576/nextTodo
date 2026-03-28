@@ -1,9 +1,9 @@
 "use client";
-import { createTodo } from "@/app/services/taskService";
+import { createTodo, getTodoById, updateTask } from "@/app/services/taskService";
 import Header from "@/components/header";
 import Loader from "@/components/loader";
-import { useState } from "react"
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AddTaskPage(){
     const [title,setTitle] = useState("");
@@ -11,60 +11,71 @@ export default function AddTaskPage(){
     const [loading,setLoading] = useState(false)
     const router = useRouter()
 
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id");
+
+ 
+    const userData = localStorage.getItem("user");
+
+    useEffect(()=>{
+          setLoading(true)
+          if (id) {
+            getTodoById(id)
+            .then((data) => {
+                  setLoading(false)
+                setTitle(data.title);
+                setDescription(data.description);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+    },[id])
+
+    if (!userData) {
+        console.log("No user found");
+        return;
+    }
+    const user = JSON.parse(userData);
+
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
-  setLoading(true)
-
-          try{
-
-                await createTodo({
-                title,
-                description
-                })
-
+         if (!title.trim()) {
+            alert("Title is required");
+            return;
+        }
+        if (!description.trim()) {
+            alert("Description is required");
+            return;
+        }
+        setLoading(true)
+        try{
+            if(id){
+                await updateTask(id,{title,description})
+            }else{
+                await createTodo({title,description,userId :user._id})
                 alert("Task Added")
-
-                setTitle("")
-                setDescription("")
-                   router.back()
-
-            }catch(error){
-                console.log(error)
-                alert("Something went wrong")
             }
+            setTitle("")
+            setDescription("")
+            router.back()
 
-  setLoading(false)
-
-
-        //  const res = await fetch("/api/todos",{
-        //     method:"POST",
-        //     headers:{
-        //         "Content-Type":"application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         title,
-        //         description
-        //     })
-        //     })
-
-        //     const data = await res.json()
-
-        //     console.log(data)
-
-        //     setTitle("")
-        //     setDescription("")
+        }catch(error){
+            console.log(error)
+            alert("Something went wrong")
+        }
+        setLoading(false)
     };
 
     return(
         <>
           <div className="min-h-screen w-full flex flex-col bg-gray-100">
-                    
-                        <div className="fixed top-0 left-0 w-full">
-         <Header showDrawer={false} showNoti={false} title="Add New Task" />
-                        </div>
-                          <div className="min-h-screen bg-gray-300 p-4">
+            <div className="fixed top-0 left-0 w-full">
+                <Header showDrawer={false} showNoti={false} title={id?"Update Task":"Add New Task"} />
+            </div>
+            <div className="min-h-screen bg-gray-300 p-4">
                 <h1 className="font-bold mb-6 text-2xl">Add New Task</h1>
-   {loading && <Loader />}
+            {loading && <Loader />}
                 <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-xl space-y-6">
                     <div>
                         <label className="block text-sm font-medium">Title :</label>
@@ -90,17 +101,18 @@ export default function AddTaskPage(){
                         </div>
                         <div className="w-full flex justify-center items-center ">
                              <button
-                            type="submit"
-                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg"
-                            >
-                            Add Task
-                        </button>
+                                type="submit"
+                                className="bg-indigo-500 text-white px-4 py-2 rounded-lg"
+                                >{id ? "Update Task" : "Add Task"}
+                                
+                            </button>
+       
                         </div>
                        
                 </form>
 
             </div>
-                        </div>
+        </div>
           
         </>
     )

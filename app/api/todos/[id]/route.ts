@@ -64,11 +64,11 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  context : {params : Promise<{ id : string}>}
+   context : {params : Promise<{ id : string}>}
+   //{ params }: { params: { id: string } }
 ) {
   try {
     await connectDB();
-
     const params = await context.params;
     const id =  params.id;
     const deletedTodo = await Todo.findByIdAndDelete(id);

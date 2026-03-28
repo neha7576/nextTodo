@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function IntroPage() {
+    redirect("/login");
   return (
+   
      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-500 to-purple-600">
         <div className="text-center text-white max-w-xl px-5">
           <h1 className="text-4xl font-bold mb-6">My TODO APP</h1>

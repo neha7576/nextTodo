@@ -3,14 +3,13 @@ import Drawer from "@/components/drawer";
 import Header from "@/components/header";
 import { useEffect, useState } from "react";
 import { getAllTodo } from "../services/taskService";
-
-
-
+import NoData from "@/components/noDataFound";
+import {ChevronRight, Edit, Pencil, Trash } from "lucide-react";
 
 export default function HomePage(){
       const [open, setOpen] = useState(false);
       const [todos, setTodos] = useState([]);
-
+    
         useEffect(() => {
             fetchTodos();
             }, []);
@@ -24,24 +23,15 @@ export default function HomePage(){
             }
             };
 
-      const tasks = [
-        { id: 1, title: "Design UI", status: "Pending" },
-        { id: 2, title: "Create API", status: "Completed" },
-        { id: 3, title: "Fix bugs", status: "Pending" },
-          { id: 4, title: "Design UI", status: "Pending" },
-        { id: 5, title: "Create API", status: "Completed" },
-        { id: 6, title: "Fix bugs", status: "Pending" },
-          { id: 7, title: "Design UI", status: "Pending" },
-        { id: 8, title: "Create API", status: "Completed" },
-        { id: 9, title: "Fix bugs", status: "Pending" }
-        ];
+  
     return(
         <div className=" min-h-screen w-full flex flex-col bg-gray-100">
             <div className="fixed w-full flex">
                    <Header showDrawer showNoti  title= "Home" onMenuClick={() => setOpen(true)} />
             </div>
          
-                 <Drawer isOpen={open} onClose={() => setOpen(false)} />
+            <Drawer isOpen={open} onClose={() => setOpen(false)} />
+                
             <main className="flex flex-col h-screen p-4 mt-10">
                 <div className=" bg-linear-to-br from-purple-500 via-indigo-500 to bg-pink-800 text-white p-6 rounded-2xl shadow-lg  w-full">
                     <h3 className="text-white font-bold">Today's Tasks</h3>
@@ -57,23 +47,38 @@ export default function HomePage(){
                       <p className=" text-indigo-500 text-sm ">
                        <a href="/tasks">See All</a> </p>
                 </div>
-                <div className="flex-1 overflow-y-auto space-y-2 mt-2 indica">
-                    {todos.map((task:any) => (
-                        <div 
-                        key={task._id}
-                        className="bg-white shadow-md rounded-xl p-4"
-                        >
-                        <p className="text-lg font-semibold">
-                            {task.title}
-                        </p>
-
-                        <p className="text-sm text-gray-500 mt-1">
-                            {task.description}
-                        </p>
+                    {todos.length === 0 ? (
+                        <div className="text-center  text-gray-500">
+                            <NoData />
                         </div>
-                    ))}
+                    ) : (
+                       <div className="overflow-y-scroll flex flex-col gap-4 m-2 hide-scrollbar ">
+                         {todos.map((task:any) => (
+                            <div 
+                            key={task._id}
+                            className="bg-white shadow-md rounded-xl p-4 flex justify-between"
+                            >
+                              <div className="mr-4">
+                                <p className="text-lg font-semibold">
+                                    {task.title}
+                                </p>
 
-                    </div>
+                                <p className="text-sm text-gray-500 mt-1">
+                                    {task.description}
+                                </p>
+                                </div>
+                                {/* <div className="flex flex-col justify-between">
+                                    <Pencil size={20} className="text-blue-600"/>
+                                    <ChevronRight size={20} className="text-blue-600"/>
+                                    <Trash size={20} className="text-red-600" />
+                                </div> */}
+                                  
+                            </div>
+                        ))}
+                         </div>
+                    )}
+                   
+
             </main>
         </div>
     )
