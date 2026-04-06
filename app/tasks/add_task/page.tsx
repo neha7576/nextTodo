@@ -10,16 +10,29 @@ export default function AddTaskPage(){
     const [description , setDescription] = useState("");
     const [loading,setLoading] = useState(false)
     const router = useRouter()
+    const [user, setUser] = useState<any>(null);
 
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
 
  
-    const userData = localStorage.getItem("user");
+  
 
     useEffect(()=>{
-          setLoading(true)
+          const userData = localStorage.getItem("user");
+       
+            if (!userData) {
+               
+                console.log("No user found");
+                return;
+            }else{
+                alert(userData)
+            }
+    const user = JSON.parse(userData);
+    setUser(user);
           if (id) {
+          setLoading(true)
+
             getTodoById(id)
             .then((data) => {
                   setLoading(false)
@@ -28,15 +41,14 @@ export default function AddTaskPage(){
             })
             .catch((err) => {
                 console.log(err);
-            });
+            })
+           
         }
+        
+          
     },[id])
 
-    if (!userData) {
-        console.log("No user found");
-        return;
-    }
-    const user = JSON.parse(userData);
+  
 
     const handleSubmit = async (e:any) =>{
         e.preventDefault();
@@ -62,7 +74,7 @@ export default function AddTaskPage(){
 
         }catch(error){
             console.log(error)
-            alert("Something went wrong")
+            alert(error)
         }
         setLoading(false)
     };

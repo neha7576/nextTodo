@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import { getAllTodo } from "../services/taskService";
 import NoData from "@/components/noDataFound";
 import {ChevronRight, Edit, Pencil, Trash } from "lucide-react";
+import { useToast } from "../context/ToastContext";
 
 export default function HomePage(){
       const [open, setOpen] = useState(false);
       const [todos, setTodos] = useState([]);
+      const { showToast } = useToast();
     
         useEffect(() => {
             fetchTodos();
@@ -18,6 +20,7 @@ export default function HomePage(){
             try {
                 const data = await getAllTodo();
                 setTodos(data);
+                showToast("Todo gets successfully.", "success");
             } catch (error) {
                 console.log(error);
             }

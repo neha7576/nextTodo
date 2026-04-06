@@ -64,7 +64,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-   context : {params : Promise<{ id : string}>}
+  context : {params : Promise<{ id : string}>}
    //{ params }: { params: { id: string } }
 ) {
   try {
