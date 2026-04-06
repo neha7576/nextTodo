@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { createTodo, getTodoById, updateTask } from "@/app/services/taskService";
 import Header from "@/components/header";
 import Loader from "@/components/loader";
@@ -19,6 +20,7 @@ export default function AddTaskPage(){
   
 
     useEffect(()=>{
+         if (typeof window === "undefined") return;
           const userData = localStorage.getItem("user");
        
             if (!userData) {
@@ -26,7 +28,7 @@ export default function AddTaskPage(){
                 console.log("No user found");
                 return;
             }else{
-                alert(userData)
+               // alert(userData)
             }
     const user = JSON.parse(userData);
     setUser(user);
