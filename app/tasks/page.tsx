@@ -56,7 +56,14 @@ export default function Tasks(){
     const fetchTodos = async () => {
         try {
          //const user = JSON.parse(localStorage.getItem("user") || "{}");
-         const userData = localStorage.getItem("user");
+        // const userData = localStorage.getItem("user");
+
+              if (typeof window === "undefined") return; // ✅ important
+
+    const userData = localStorage.getItem("user");
+
+    if (!userData) return;
+
          if (!userData) {
             console.log("No user found");
             return;

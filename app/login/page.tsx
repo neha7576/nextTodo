@@ -14,7 +14,11 @@ export default function LoginPage(){
     const router = useRouter()
 
     useEffect(() => {
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        let isLoggedIn = null;
+
+if (typeof window !== "undefined") {
+  isLoggedIn = localStorage.getItem("isLoggedIn");
+}
 
         if (isLoggedIn === "true") {
             router.replace("/home");
