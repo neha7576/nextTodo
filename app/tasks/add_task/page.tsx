@@ -14,7 +14,13 @@ export default function AddTaskPage(){
     const [user, setUser] = useState<any>(null);
 
     const searchParams = useSearchParams();
-    const id = searchParams.get("id");
+    const [id, setId] = useState<string | null>(null);
+    //const id = searchParams.get("id");
+
+    useEffect(() => {
+  const taskId = searchParams.get("id");
+  setId(taskId);
+}, [searchParams]);
 
  
   
@@ -22,6 +28,7 @@ export default function AddTaskPage(){
     useEffect(()=>{
          if (typeof window === "undefined") return;
           const userData = localStorage.getItem("user");
+          
        
             if (!userData) {
                
