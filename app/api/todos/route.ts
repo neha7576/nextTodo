@@ -23,10 +23,18 @@ export async function GET(req:any){
         _id: todo._id,
         title: todo.title,
         description: todo.description,
-        user: todo.userId, // populated data
+        user: todo.userId, 
       }));
 
-    return NextResponse.json(formattedTodos);
+    // return NextResponse.json(formattedTodos);
+
+    return new Response(JSON.stringify(formattedTodos), {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+    });
 
  
 
@@ -36,6 +44,17 @@ export async function GET(req:any){
       {status : 500}
     );
   }
+}
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE",
+      "Access-Control-Allow-Headers": "*",
+    },
+  });
 }
 
 // export async function GET() {
