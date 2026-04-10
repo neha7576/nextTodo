@@ -53,7 +53,7 @@ export async function POST(req:Request){
     
   }catch(error){
     return NextResponse.json(
-      { message: "Failed to create todos" },
+      { message: "Failed to login." },
       { status: 500 }
     );
   }
