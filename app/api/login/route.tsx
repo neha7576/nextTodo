@@ -39,14 +39,23 @@ export async function POST(req:Request){
       sameSite: "strict",
       maxAge: 60 * 60 * 24 * 7,
     });
+    // return Response.json({
+    //   success: true,
+    //   user: {
+    //     email: user.email,
+    //     role: user.role,
+    //     _id: user._id,
+    //   },
+      
+    // });
     return Response.json({
       success: true,
+      token, 
       user: {
         email: user.email,
         role: user.role,
         _id: user._id,
       },
-      
     });
     
 
